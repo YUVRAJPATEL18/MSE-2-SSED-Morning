@@ -104,7 +104,7 @@ def create_submission_pdf(output_filename):
         [Paragraph("Full Name", body_bold), Paragraph("Yuvraj Patel", body_style)],
         [Paragraph("University Roll Number", body_bold), Paragraph("2400291520289", body_style)],
         [Paragraph("Section", body_bold), Paragraph("D", body_style)],
-        [Paragraph("Branch", body_bold), Paragraph("CSE AI (Computer Science & Engineering - Artificial Intelligence)", body_style)],
+        [Paragraph("Branch", body_bold), Paragraph("CSE AI", body_style)],
         [Paragraph("GitHub Username", body_bold), Paragraph("YUVRAJPATEL18", body_style)],
     ]
     t1 = Table(student_data, colWidths=[160, 380])
@@ -122,8 +122,8 @@ def create_submission_pdf(output_filename):
     repo_data = [
         [Paragraph("GitHub Repository URL (Personal Fork)", body_bold), Paragraph("https://github.com/YUVRAJPATEL18/MSE-2-SSED-Morning", body_style)],
         [Paragraph("GitHub Branch Used for Implementation", body_bold), Paragraph("main", body_style)],
-        [Paragraph("Base Repository (Instructor)", body_bold), Paragraph("https://github.com/atindeRR/MSE-2-SSED-Morning (branch: main)", body_style)],
-        [Paragraph("Latest Verified Commit Hash", body_bold), Paragraph("cc39530 (Update submission PDF with live CI/CD execution screenshots)", body_style)],
+        [Paragraph("Base Repository", body_bold), Paragraph("https://github.com/atindeRR/MSE-2-SSED-Morning", body_style)],
+        [Paragraph("Commit Hash", body_bold), Paragraph("390617f", body_style)],
     ]
     t2 = Table(repo_data, colWidths=[160, 380])
     t2.setStyle(TableStyle([
@@ -139,8 +139,8 @@ def create_submission_pdf(output_filename):
     elements.append(Paragraph("3. Docker Hub Details", sec_heading))
     docker_data = [
         [Paragraph("Docker Hub Username", body_bold), Paragraph("yuvraj180", body_style)],
-        [Paragraph("Frontend Docker Image URL", body_bold), Paragraph("https://hub.docker.com/r/yuvraj180/taskflow-frontend (Tags: latest, 1976d1b, fc52320)", body_style)],
-        [Paragraph("Backend Docker Image URL", body_bold), Paragraph("https://hub.docker.com/r/yuvraj180/taskflow-backend (Tags: latest, 1976d1b, fc52320)", body_style)],
+        [Paragraph("Frontend Docker Image URL", body_bold), Paragraph("https://hub.docker.com/r/yuvraj180/taskflow-frontend", body_style)],
+        [Paragraph("Backend Docker Image URL", body_bold), Paragraph("https://hub.docker.com/r/yuvraj180/taskflow-backend", body_style)],
     ]
     t3 = Table(docker_data, colWidths=[160, 380])
     t3.setStyle(TableStyle([
@@ -154,11 +154,11 @@ def create_submission_pdf(output_filename):
 
     # 4. CI/CD Execution Evidence Table
     elements.append(Paragraph("4. CI/CD Execution Evidence", sec_heading))
-    elements.append(Paragraph("Summary checklist of all required CI/CD execution stages verified across GitHub Actions pipeline runs:", body_style))
+    elements.append(Paragraph("Execution stages verified through the automated CI/CD pipeline:", body_style))
     elements.append(Spacer(1, 3))
 
     stage_summary = [
-        [Paragraph("Required Stage", body_bold), Paragraph("Pipeline Action / Verification Command", body_bold), Paragraph("Status", body_bold)],
+        [Paragraph("Stage", body_bold), Paragraph("Pipeline Action / Verification Command", body_bold), Paragraph("Status", body_bold)],
         [Paragraph("• GitHub Actions workflow execution", body_style), Paragraph("Docker Practical - Publish and Verify (cd.yml on main)", body_style), Paragraph("✔ SUCCESS", code_success)],
         [Paragraph("• Docker Hub authentication", body_style), Paragraph("docker/login-action@v3 using DOCKERHUB_TOKEN", body_style), Paragraph("✔ SUCCESS", code_success)],
         [Paragraph("• Backend Docker image build & publishing", body_style), Paragraph("docker/build-push-action@v6 -> yuvraj180/taskflow-backend:latest", body_style), Paragraph("✔ SUCCESS", code_success)],
@@ -167,7 +167,7 @@ def create_submission_pdf(output_filename):
         [Paragraph("• Application deployment", body_style), Paragraph("docker compose -f docker-compose.deploy.yml up -d", body_style), Paragraph("✔ SUCCESS", code_success)],
         [Paragraph("• Backend health check", body_style), Paragraph("curl --fail http://localhost:3000/health (status: ok)", body_style), Paragraph("✔ SUCCESS", code_success)],
         [Paragraph("• Frontend accessibility verification", body_style), Paragraph("curl --fail http://localhost:8080/ (HTTP 200 OK)", body_style), Paragraph("✔ SUCCESS", code_success)],
-        [Paragraph("• Final successful CI/CD pipeline status", body_style), Paragraph("GitHub Actions Run completed successfully", body_style), Paragraph("✔ SUCCESS", code_success)],
+        [Paragraph("• Final successful CI/CD pipeline status", body_style), Paragraph("Workflow run completed successfully", body_style), Paragraph("✔ SUCCESS", code_success)],
         [Paragraph("• Automated API & Redis test suite", body_style), Paragraph("Jest runner: 12 of 12 tests passed (TC01 - TC12)", body_style), Paragraph("✔ SUCCESS", code_success)],
     ]
     t4 = Table(stage_summary, colWidths=[150, 290, 100])
@@ -183,31 +183,27 @@ def create_submission_pdf(output_filename):
 
     # PAGE BREAK: GitHub Actions Screenshots
     elements.append(PageBreak())
-    elements.append(Paragraph("Evidence Screenshot 1: Complete Stage-by-Stage GitHub Actions Pipeline Execution", sub_heading))
-    elements.append(Paragraph("Covers: Docker Hub authentication, Backend image build & push, Frontend image build & push, Docker Compose pull, Application deployment, Backend health verification, and Frontend accessibility verification.", body_style))
+    elements.append(Paragraph("Figure 1: GitHub Actions Job Execution Breakdown", sub_heading))
     elements.append(Spacer(1, 4))
     if os.path.exists("job_steps.png"):
         elements.append(Image("job_steps.png", width=530, height=365))
     elements.append(Spacer(1, 10))
 
-    elements.append(Paragraph("Evidence Screenshot 2: Final Successful CI/CD Pipeline Status (Workflow Run Overview)", sub_heading))
-    elements.append(Paragraph("Status: Success | Duration: 1m 16s | All pipeline jobs completed cleanly on branch 'main'.", body_style))
+    elements.append(Paragraph("Figure 2: Pipeline Run Overview & Status", sub_heading))
     elements.append(Spacer(1, 4))
     if os.path.exists("workflow_run.png"):
         elements.append(Image("workflow_run.png", width=530, height=275))
 
     # PAGE BREAK: Terminal Screenshot Evidence
     elements.append(PageBreak())
-    elements.append(Paragraph("Evidence Screenshot 3: Terminal Execution Evidence — Docker Compose, Health Checks & Tests", sub_heading))
-    elements.append(Paragraph("Demonstrates local terminal execution of: multi-container build & startup (docker compose up -d --build), container health verification (docker compose ps), backend health check endpoint (curl /health), frontend accessibility (curl /), and automated Jest API test suite execution (12 of 12 tests passed).", body_style))
+    elements.append(Paragraph("Figure 3: Terminal Execution — Docker Compose, Health Checks & API Tests", sub_heading))
     elements.append(Spacer(1, 6))
     if os.path.exists("terminal_screenshot.png"):
         elements.append(Image("terminal_screenshot.png", width=530, height=540))
 
     # PAGE BREAK: Actions History & Declaration
     elements.append(PageBreak())
-    elements.append(Paragraph("Evidence Screenshot 4: GitHub Actions Workflow Execution History", sub_heading))
-    elements.append(Paragraph("Demonstrates consecutive successful automated CD pipeline executions triggered upon commit pushes to the repository main branch.", body_style))
+    elements.append(Paragraph("Figure 4: GitHub Actions Workflow Execution History", sub_heading))
     elements.append(Spacer(1, 4))
     if os.path.exists("actions_summary.png"):
         elements.append(Image("actions_summary.png", width=530, height=265))
